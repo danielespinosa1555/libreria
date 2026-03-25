@@ -1,0 +1,36 @@
+{% extends 'libreria/base.html' %}
+{% block page_title %}Eliminar{% endblock %}
+{% block content %}
+
+<div style="max-width:460px;margin:40px auto">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06)">
+    <div style="background:#fdf2f2;border-bottom:1px solid #fcc;padding:20px 24px;display:flex;align-items:center;gap:12px">
+      <div style="width:40px;height:40px;background:#e74c3c;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;flex-shrink:0">
+        <i class="bi bi-trash"></i>
+      </div>
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:#8c1c1c;font-weight:500">Confirmar eliminación</div>
+        <div style="font-size:.8rem;color:#c0392b;opacity:.7">Esta acción no se puede deshacer</div>
+      </div>
+    </div>
+
+    <div style="padding:28px 24px">
+      <p style="font-size:.95rem;color:var(--ink);margin-bottom:6px">
+        ¿Estás seguro de eliminar este <strong>{{ tipo }}</strong>?
+      </p>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:24px">{{ objeto }}</p>
+
+      <form method="post" class="d-flex gap-2">
+        {% csrf_token %}
+        <button type="submit" class="btn" style="background:#e74c3c;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-weight:500">
+          <i class="bi bi-trash"></i> Sí, eliminar
+        </button>
+        <a href="javascript:history.back()" class="btn" style="border:1px solid var(--border);color:var(--muted);background:transparent;border-radius:8px;padding:10px 20px;font-family:'DM Sans',sans-serif">
+          Cancelar
+        </a>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

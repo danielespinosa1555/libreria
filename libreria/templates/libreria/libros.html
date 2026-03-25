@@ -1,0 +1,98 @@
+{% extends 'libreria/base.html' %}
+{% block page_title %}Libros{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h2><i class="bi bi-book" style="color:var(--amber);font-size:1.2rem"></i> Libros</h2>
+  <a href="/libros/nuevo/" class="btn btn-primary">
+    <i class="bi bi-plus-lg"></i> Nuevo libro
+  </a>
+</div>
+
+<!-- SEARCH BAR -->
+<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;">
+  <form class="d-flex gap-2 align-items-center flex-wrap" method="get">
+    <div style="position:relative;flex:1;min-width:200px">
+      <i class="bi bi-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.9rem"></i>
+      <input type="text" name="q" value="{{ q }}" class="form-control" style="padding-left:36px" placeholder="Buscar por título o autor...">
+    </div>
+    <select name="categoria" class="form-select" style="max-width:220px">
+      <option value="">Todas las categorías</option>
+      {% for cat in categorias %}
+      <option value="{{ cat.pk }}" {% if cat_sel == cat.pk|stringformat:"s" %}selected{% endif %}>{{ cat.nombre }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+  </form>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <th>Portada</th>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>Categoría</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for libro in libros %}
+    <tr>
+      <td>
+        {% if libro.imagen %}
+        <img src="{{ libro.imagen }}" width="44" height="56" style="object-fit:cover;border-radius:6px;display:block">
+        {% else %}
+        <div style="width:44px;height:56px;background:var(--cream);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--muted)"><i class="bi bi-book"></i></div>
+        {% endif %}
+      </td>
+      <td>
+        <span style="font-weight:600;color:var(--ink)">{{ libro.titulo }}</span>
+        <br><small style="color:var(--muted)">{{ libro.descripcion|truncatechars:55 }}</small>
+      </td>
+      <td style="color:var(--muted)">{{ libro.autor }}</td>
+      <td>
+        {% if libro.categoria %}
+        <span class="badge" style="background:var(--cream);color:var(--ink);border:1px solid var(--border)">{{ libro.categoria }}</span>
+        {% else %}<span style="color:var(--muted)">—</span>{% endif %}
+      </td>
+      <td style="font-weight:600">${{ libro.precio }}</td>
+      <td>{{ libro.stock }}</td>
+      <td>
+        {% if libro.stock_bajo %}
+        <span class="badge" style="background:#fff8e6;color:#92620a;border:1px solid #f0d080">
+          <i class="bi bi-exclamation-triangle"></i> Bajo
+        </span>
+        {% else %}
+        <span class="badge" style="background:#edf9f2;color:#1a6e3c;border:1px solid #b3e8c8">
+          <i class="bi bi-check-circle"></i> OK
+        </span>
+        {% endif %}
+      </td>
+      <td>
+        <div class="d-flex gap-1">
+          <a href="/libros/{{ libro.pk }}/editar/" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
+          {% if user.is_staff or user.is_superuser %}
+          <a href="/libros/{{ libro.pk }}/eliminar/" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="bi bi-trash"></i></a>
+          {% endif %}
+        </div>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="8" style="text-align:center;padding:48px;color:var(--muted)">
+        <i class="bi bi-search" style="font-size:2rem;display:block;margin-bottom:8px"></i>
+        No hay libros registrados.
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

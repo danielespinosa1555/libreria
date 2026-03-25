@@ -1,0 +1,34 @@
+{% extends 'libreria/tienda/base_tienda.html' %}
+{% block title %}Crear cuenta{% endblock %}
+{% block content %}
+
+<div style="max-width:480px;margin:40px auto">
+  <div style="text-align:center;margin-bottom:28px">
+    <div style="width:52px;height:52px;background:var(--amber);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;margin-bottom:14px">
+      <i class="bi bi-person-plus"></i>
+    </div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:500;color:var(--ink);margin-bottom:6px">Crear cuenta</h2>
+    <p style="color:var(--muted);font-size:.875rem">Regístrate para comprar y seguir tus pedidos</p>
+  </div>
+
+  <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:32px">
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div style="margin-bottom:18px">
+        <label style="display:block;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<div style="color:#c0392b;font-size:.8rem;margin-top:5px">{{ field.errors }}</div>{% endif %}
+      </div>
+      {% endfor %}
+      <button type="submit" style="width:100%;padding:14px;background:var(--ink);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;margin-top:4px">
+        Crear cuenta
+      </button>
+    </form>
+    <div style="text-align:center;margin-top:20px;font-size:.83rem;color:var(--muted)">
+      ¿Ya tienes cuenta? <a href="/login/" style="color:var(--amber);text-decoration:none;font-weight:500">Inicia sesión</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

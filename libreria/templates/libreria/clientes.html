@@ -1,0 +1,42 @@
+{% extends 'libreria/base.html' %}
+{% block page_title %}Clientes{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h2><i class="bi bi-people" style="color:var(--amber);font-size:1.2rem"></i> Clientes</h2>
+  <a href="/clientes/nuevo/" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nuevo cliente</a>
+</div>
+
+<div class="table-wrap">
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <th>#</th><th>Nombre</th><th>Email</th><th>Teléfono</th><th>Registrado</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for cliente in clientes %}
+      <tr>
+        <td style="color:var(--muted);font-size:.8rem">{{ cliente.pk }}</td>
+        <td style="font-weight:600">{{ cliente.nombre }}</td>
+        <td style="color:var(--muted)">{{ cliente.email }}</td>
+        <td style="color:var(--muted)">{{ cliente.telefono|default:"—" }}</td>
+        <td style="color:var(--muted);font-size:.83rem">{{ cliente.creado_en|date:"d/m/Y" }}</td>
+        <td>
+          <div class="d-flex gap-1">
+            <a href="/clientes/{{ cliente.pk }}/editar/" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+            <a href="/clientes/{{ cliente.pk }}/eliminar/" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+          </div>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6" style="text-align:center;padding:48px;color:var(--muted)">
+        <i class="bi bi-people" style="font-size:2rem;display:block;margin-bottom:8px"></i>
+        No hay clientes registrados.
+      </td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

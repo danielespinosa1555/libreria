@@ -1,0 +1,39 @@
+{% extends 'libreria/base.html' %}
+{% block page_title %}Ventas{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h2><i class="bi bi-receipt" style="color:var(--amber);font-size:1.2rem"></i> Ventas</h2>
+  <a href="/ventas/nueva/" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nueva venta</a>
+</div>
+
+<div class="table-wrap">
+  <table class="table mb-0">
+    <thead>
+      <tr><th>#</th><th>Cliente</th><th>Libro</th><th>Cantidad</th><th>Precio unit.</th><th>Total</th><th>Fecha</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for venta in ventas %}
+      <tr>
+        <td style="color:var(--muted);font-size:.8rem">{{ venta.pk }}</td>
+        <td style="font-weight:600">{{ venta.cliente.nombre }}</td>
+        <td style="color:var(--muted)">{{ venta.libro.titulo }}</td>
+        <td>{{ venta.cantidad }}</td>
+        <td style="color:var(--muted)">${{ venta.precio_unitario }}</td>
+        <td style="font-weight:700;color:var(--ink)">${{ venta.total }}</td>
+        <td style="color:var(--muted);font-size:.83rem">{{ venta.fecha|date:"d/m/Y H:i" }}</td>
+        <td>
+          <a href="/ventas/{{ venta.pk }}/eliminar/" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="8" style="text-align:center;padding:48px;color:var(--muted)">
+        <i class="bi bi-receipt" style="font-size:2rem;display:block;margin-bottom:8px"></i>
+        No hay ventas registradas.
+      </td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

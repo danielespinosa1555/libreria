@@ -1,0 +1,30 @@
+{% extends 'libreria/base.html' %}
+{% block page_title %}{{ titulo }}{% endblock %}
+{% block content %}
+
+<div style="max-width:580px">
+  <div class="page-header">
+    <h2><i class="bi bi-pencil-square" style="color:var(--amber);font-size:1.2rem"></i> {{ titulo }}</h2>
+  </div>
+
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:32px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+      <div style="margin-bottom:20px">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+        <div style="color:#c0392b;font-size:.8rem;margin-top:5px">{{ field.errors }}</div>
+        {% endif %}
+      </div>
+      {% endfor %}
+      <div class="d-flex gap-2" style="margin-top:8px">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar</button>
+        <a href="javascript:history.back()" class="btn" style="border:1px solid var(--border);color:var(--muted);background:transparent">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

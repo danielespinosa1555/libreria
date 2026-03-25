@@ -1,0 +1,77 @@
+{% extends 'libreria/tienda/base_tienda.html' %}
+{% block title %}Carrito — Librería{% endblock %}
+{% block content %}
+
+<div style="max-width:860px;margin:0 auto">
+  <div style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:24px">
+    <i class="bi bi-cart3" style="color:var(--amber)"></i> Tu carrito
+  </div>
+
+  {% if items %}
+  <div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px">
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border)">
+          <th style="padding:14px 20px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left">Libro</th>
+          <th style="padding:14px 20px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left">Precio</th>
+          <th style="padding:14px 20px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left">Cantidad</th>
+          <th style="padding:14px 20px;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left">Subtotal</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for item in items %}
+      <tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:16px 20px;vertical-align:middle">
+          <div style="display:flex;align-items:center;gap:12px">
+            {% if item.imagen %}
+            <img src="{{ item.imagen }}" style="width:48px;height:60px;object-fit:cover;border-radius:6px">
+            {% endif %}
+            <span style="font-weight:600;color:var(--ink)">{{ item.titulo }}</span>
+          </div>
+        </td>
+        <td style="padding:16px 20px;vertical-align:middle;color:var(--muted)">${{ item.precio }}</td>
+        <td style="padding:16px 20px;vertical-align:middle">
+          <form method="post" action="/tienda/carrito/actualizar/{{ item.pk }}/" style="display:flex;gap:6px;align-items:center">
+            {% csrf_token %}
+            <input type="number" name="cantidad" value="{{ item.cantidad }}" min="1" style="width:70px;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.875rem">
+            <button type="submit" style="padding:7px 10px;background:transparent;border:1px solid var(--border);border-radius:7px;color:var(--muted);cursor:pointer"><i class="bi bi-check"></i></button>
+          </form>
+        </td>
+        <td style="padding:16px 20px;vertical-align:middle;font-weight:700">${{ item.subtotal }}</td>
+        <td style="padding:16px 20px;vertical-align:middle">
+          <a href="/tienda/carrito/quitar/{{ item.pk }}/" style="color:var(--muted);font-size:.9rem;transition:color .15s" onmouseover="this.style.color='#c0392b'" onmouseout="this.style.color='var(--muted)'">
+            <i class="bi bi-trash"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <div style="padding:16px 20px;display:flex;justify-content:flex-end;align-items:center;gap:16px;background:#faf8f5">
+      <span style="font-size:.875rem;color:var(--muted)">Total del pedido</span>
+      <span style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:500;color:var(--ink)">${{ total }}</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;justify-content:flex-end">
+    <a href="/tienda/" style="padding:12px 22px;border:1px solid var(--border);border-radius:9px;color:var(--muted);text-decoration:none;font-size:.875rem;font-family:'DM Sans',sans-serif">
+      Seguir comprando
+    </a>
+    <a href="/tienda/checkout/" style="padding:12px 24px;background:var(--ink);color:#fff;border-radius:9px;text-decoration:none;font-size:.875rem;font-family:'DM Sans',sans-serif;font-weight:500;display:flex;align-items:center;gap:7px">
+      <i class="bi bi-credit-card"></i> Finalizar pedido
+    </a>
+  </div>
+
+  {% else %}
+  <div style="text-align:center;padding:80px 20px;color:var(--muted)">
+    <i class="bi bi-cart-x" style="font-size:3rem;display:block;margin-bottom:14px"></i>
+    <p style="margin-bottom:20px">Tu carrito está vacío.</p>
+    <a href="/tienda/" style="padding:12px 24px;background:var(--ink);color:#fff;border-radius:9px;text-decoration:none;font-size:.875rem;font-family:'DM Sans',sans-serif;font-weight:500">
+      Ver catálogo
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

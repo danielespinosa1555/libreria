@@ -1,0 +1,50 @@
+{% extends 'libreria/tienda/base_tienda.html' %}
+{% block title %}{{ libro.titulo }}{% endblock %}
+{% block content %}
+
+<nav style="margin-bottom:24px;font-size:.82rem">
+  <a href="/tienda/" style="color:var(--amber);text-decoration:none">Catálogo</a>
+  <span style="color:var(--muted);margin:0 8px">/</span>
+  <span style="color:var(--muted)">{{ libro.titulo }}</span>
+</nav>
+
+<div class="row g-5">
+  <div class="col-md-4">
+    {% if libro.imagen %}
+    <img src="{{ libro.imagen }}" style="width:100%;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.12);object-fit:cover;max-height:500px">
+    {% else %}
+    <div style="width:100%;height:400px;background:var(--cream);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:5rem;color:var(--border)">
+      <i class="bi bi-book"></i>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="col-md-8">
+    {% if libro.categoria %}
+    <span style="font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--amber)">{{ libro.categoria }}</span>
+    {% endif %}
+
+    <h1 style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:500;margin:8px 0 4px;color:var(--ink)">{{ libro.titulo }}</h1>
+    <p style="font-size:1.05rem;color:var(--muted);margin-bottom:4px">{{ libro.autor }}</p>
+    <p style="font-size:.8rem;color:var(--border);margin-bottom:20px">ISBN: {{ libro.isbn }}</p>
+
+    {% if libro.descripcion %}
+    <p style="color:var(--ink);line-height:1.7;margin-bottom:24px;font-size:.95rem">{{ libro.descripcion }}</p>
+    {% endif %}
+
+    <div style="display:flex;align-items:baseline;gap:20px;margin-bottom:28px;padding:20px;background:var(--cream);border-radius:12px">
+      <span style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:500;color:var(--ink)">${{ libro.precio }}</span>
+      <span style="font-size:.875rem;color:var(--muted)">{{ libro.stock }} disponibles</span>
+    </div>
+
+    <form method="post" action="/tienda/carrito/agregar/{{ libro.pk }}/" style="display:flex;gap:12px;align-items:center">
+      {% csrf_token %}
+      <input type="number" name="cantidad" value="1" min="1" max="{{ libro.stock }}" style="width:90px;padding:13px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--ink);outline:none">
+      <button type="submit" style="flex:1;padding:14px 24px;background:var(--ink);color:#fff;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+        <i class="bi bi-cart-plus"></i> Agregar al carrito
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

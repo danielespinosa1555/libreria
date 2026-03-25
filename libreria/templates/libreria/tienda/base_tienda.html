@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Librería Online{% endblock %}</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1a17;
+    --amber: #c8893a;
+    --amber-light: #e8b96a;
+    --cream: #f7f3ee;
+    --border: #e5ddd4;
+    --muted: #8c7f72;
+    --surface: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    margin: 0;
+  }
+
+  /* NAV */
+  .tienda-nav {
+    background: var(--ink);
+    padding: 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  .nav-brand .brand-dot {
+    width: 28px; height: 28px;
+    background: var(--amber);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .85rem;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,.6);
+    text-decoration: none;
+    font-size: .875rem;
+    padding: 7px 14px;
+    border-radius: 7px;
+    transition: all .15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+
+  .nav-username {
+    font-size: .82rem;
+    color: rgba(255,255,255,.5);
+  }
+
+  .btn-nav {
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: all .15s;
+  }
+
+  .btn-nav-outline {
+    border: 1px solid rgba(255,255,255,.2);
+    color: rgba(255,255,255,.8);
+    background: transparent;
+  }
+
+  .btn-nav-outline:hover { border-color: rgba(255,255,255,.5); color: #fff; background: rgba(255,255,255,.06); }
+
+  .btn-nav-amber {
+    background: var(--amber);
+    color: #fff;
+  }
+
+  .btn-nav-amber:hover { background: #b87c30; color: #fff; }
+
+  .cart-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cart-pill {
+    position: absolute;
+    top: -6px; right: -10px;
+    background: #e74c3c;
+    color: #fff;
+    font-size: .65rem;
+    font-weight: 700;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* MAIN */
+  .tienda-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 32px;
+  }
+
+  /* CARDS de libro */
+  .libro-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .libro-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,.1);
+  }
+
+  .img-libro {
+    width: 100%; height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .img-placeholder {
+    width: 100%; height: 220px;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: var(--border);
+  }
+
+  /* ALERTS */
+  .alert {
+    border: none;
+    border-radius: 10px;
+    font-size: .875rem;
+    border-left: 4px solid;
+    padding: 12px 16px;
+  }
+
+  .alert-success { background: #f0faf4; border-left-color: #27ae60; color: #1a6e3c; }
+  .alert-danger  { background: #fdf2f2; border-left-color: #e74c3c; color: #8c1c1c; }
+  .alert-warning { background: #fffbf0; border-left-color: var(--amber); color: #7a5200; }
+  .alert-info    { background: #f0f6ff; border-left-color: #3498db; color: #1a4a7c; }
+
+  /* BTN TIENDA */
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    border-radius: 8px;
+    font-size: .875rem;
+  }
+
+  .btn-dark {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .btn-dark:hover { background: #333; border-color: #333; }
+
+  .btn-success {
+    background: #27ae60;
+    border-color: #27ae60;
+  }
+
+  .form-control, .form-select {
+    border-color: var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .875rem;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgba(200,137,58,.12);
+  }
+
+  .form-label {
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .card-header {
+    font-family: 'Playfair Display', serif;
+    border-bottom: 1px solid var(--border);
+    background: #faf8f5;
+    border-radius: 12px 12px 0 0 !important;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .nav-inner { padding: 0 16px; gap: 12px; }
+    .tienda-main { padding: 24px 16px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="tienda-nav">
+  <div class="nav-inner">
+    <a href="/tienda/" class="nav-brand">
+      <div class="brand-dot"><i class="bi bi-book-half"></i></div>
+      Librería
+    </a>
+    <div class="nav-links">
+      <a href="/tienda/"><i class="bi bi-grid-3x3-gap"></i> Catálogo</a>
+    </div>
+    <div class="nav-right">
+      <a href="/tienda/carrito/" class="btn-nav btn-nav-outline cart-badge">
+        <i class="bi bi-cart3"></i> Carrito
+        {% if total_carrito %}
+        <span class="cart-pill">{{ total_carrito }}</span>
+        {% endif %}
+      </a>
+      {% if user.is_authenticated %}
+        <a href="/tienda/mis-pedidos/" class="btn-nav btn-nav-outline">
+          <i class="bi bi-bag"></i> Mis pedidos
+        </a>
+        <span class="nav-username">{{ user.username }}</span>
+        <form method="post" action="/logout/" style="margin:0">
+          {% csrf_token %}
+          <button type="submit" class="btn-nav btn-nav-outline">Salir</button>
+        </form>
+      {% else %}
+        <a href="/login/" class="btn-nav btn-nav-outline">Iniciar sesión</a>
+        <a href="/tienda/registro/" class="btn-nav btn-nav-amber">Registrarse</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<div class="tienda-main">
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-3">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
